@@ -6,19 +6,21 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = "agroguide_secret_key"
-DATABASE = "database.db"
+BASE_DIR = Path(__file__).resolve().parent
+DATABASE = BASE_DIR / "database.db"
+SCHEMA_FILE = BASE_DIR / "schema.sql"
 
 
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE)
+    conn = sqlite3.connect(str(DATABASE))
     conn.row_factory = sqlite3.Row
     return conn
 
 
 def init_db():
-    if not Path(DATABASE).exists():
+    if not DATABASE.exists():
         conn = get_db_connection()
-        with open("schema.sql", "r", encoding="utf-8") as f:
+        with open(SCHEMA_FILE, "r", encoding="utf-8") as f:
             conn.executescript(f.read())
         conn.commit()
         conn.close()
@@ -632,7 +634,7 @@ def get_crop_cultivation_guide(crop):
         }
     })
 
-
+init_db()
 @app.route("/")
 def home():
     return render_template("index.html")
