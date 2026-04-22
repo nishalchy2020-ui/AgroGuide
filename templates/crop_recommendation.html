@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation - AgroGuide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('crop_recommendation') }}">Crop Recommendation</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="form-container">
+        <h2>Crop Recommendation</h2>
+
+        <form method="POST">
+            <label for="soil_type">Soil Type</label><br>
+            <select id="soil_type" name="soil_type" required>
+                <option value="">Select Soil Type</option>
+                <option value="Loamy">Loamy</option>
+                <option value="Clay">Clay</option>
+                <option value="Sandy">Sandy</option>
+            </select><br><br>
+
+            <label for="season">Season</label><br>
+            <select id="season" name="season" required>
+                <option value="">Select Season</option>
+                <option value="Summer">Summer</option>
+                <option value="Rainy">Rainy</option>
+                <option value="Winter">Winter</option>
+            </select><br><br>
+
+            <label for="water_availability">Water Availability</label><br>
+            <select id="water_availability" name="water_availability" required>
+                <option value="">Select Water Availability</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select><br><br>
+
+            <button type="submit">Get Recommendation</button>
+        </form>
+    </div>
+
+    {% if recommendations %}
+    <div class="result-container">
+        <h2>Recommended Crops</h2>
+        <ul>
+            {% for crop in recommendations %}
+                <li>{{ crop }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fertilizer Guide - AgroGuide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('crop_recommendation') }}">Crop Recommendation</a>
+        <a href="{{ url_for('weather') }}">Weather</a>
+        <a href="{{ url_for('irrigation') }}">Irrigation</a>
+        <a href="{{ url_for('fertilizer') }}">Fertilizer</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="form-container">
+        <h2>Fertilizer Guide</h2>
+
+        <form method="POST">
+            <label for="crop">Crop</label><br>
+            <select id="crop" name="crop" required>
+                <option value="">Select Crop</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Rice">Rice</option>
+                <option value="Tomato">Tomato</option>
+                <option value="Maize">Maize</option>
+            </select><br><br>
+
+            <label for="growth_stage">Growth Stage</label><br>
+            <select id="growth_stage" name="growth_stage" required>
+                <option value="">Select Growth Stage</option>
+                <option value="Seedling">Seedling</option>
+                <option value="Vegetative">Vegetative</option>
+                <option value="Flowering">Flowering</option>
+                <option value="Harvesting">Harvesting</option>
+            </select><br><br>
+
+            <button type="submit">Get Fertilizer Advice</button>
+        </form>
+    </div>
+
+    {% if advice %}
+    <div class="result-container">
+        <h2>Fertilizer Result</h2>
+        <p>{{ advice }}</p>
+    </div>
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather - AgroGuide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('crop_recommendation') }}">Crop Recommendation</a>
+        <a href="{{ url_for('weather') }}">Weather</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="form-container">
+        <h2>Weather Search</h2>
+
+        <form method="POST">
+            <label for="city">Enter City Name</label><br>
+            <input type="text" id="city" name="city" value="{{ city if city else '' }}" required><br><br>
+            <button type="submit">Check Weather</button>
+        </form>
+    </div>
+
+    {% if weather_data %}
+    <div class="result-container">
+        <h2>Current Weather</h2>
+        <p><strong>Location:</strong> {{ weather_data.city }}{% if weather_data.country %}, {{ weather_data.country }}{% endif %}</p>
+        <p><strong>Temperature:</strong> {{ weather_data.temperature }} °C</p>
+        <p><strong>Humidity:</strong> {{ weather_data.humidity }} %</p>
+        <p><strong>Wind Speed:</strong> {{ weather_data.wind_speed }} km/h</p>
+        <p><strong>Condition:</strong> {{ weather_data.description }}</p>
+    </div>
+    {% endif %}
+
+    {% if advice %}
+    <div class="result-container">
+        <h2>Farming Advice</h2>
+        <ul>
+            {% for item in advice %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+</body>
+</html>

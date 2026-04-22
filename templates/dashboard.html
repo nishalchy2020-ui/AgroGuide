@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AgroGuide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <a class="logo" href="{{ url_for('home') }}">AgroGuide</a>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('crop_recommendation') }}">Crop Recommendation</a>
+            <a href="{{ url_for('crop_suitability') }}">Crop Suitability</a>
+            <a href="{{ url_for('crop_cultivation') }}">Crop Cultivation</a>
+            <a href="{{ url_for('weather') }}">Weather</a>
+            <a href="{{ url_for('irrigation') }}">Irrigation</a>
+            <a href="{{ url_for('fertilizer') }}">Fertilizer</a>
+            <a href="{{ url_for('pest_help') }}">Pest Help</a>
+            <a href="{{ url_for('history') }}">History</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <section class="page-header">
+        <h1>Welcome, {{ user_name }}</h1>
+        <p>Manage your farming tools and recommendations from one place.</p>
+    </section>
+
+    <section class="dashboard-container">
+        <div class="dashboard-card">
+            <h3>Crop Recommendation</h3>
+            <p>Find suitable crops based on soil, season, and water availability.</p>
+            <a class="btn-link" href="{{ url_for('crop_recommendation') }}">Open</a>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Weather</h3>
+            <p>Check live weather and simple farming advice for your location.</p>
+            <a class="btn-link" href="{{ url_for('weather') }}">Open</a>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Irrigation Advice</h3>
+            <p>Get watering guidance based on crop and growth stage.</p>
+            <a class="btn-link" href="{{ url_for('irrigation') }}">Open</a>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Fertilizer Guide</h3>
+            <p>Get fertilizer suggestions based on crop and growth stage.</p>
+            <a class="btn-link" href="{{ url_for('fertilizer') }}">Open</a>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Pest and Disease Help</h3>
+            <p>Identify possible crop problems and get treatment suggestions.</p>
+            <a class="btn-link" href="{{ url_for('pest_help') }}">Open</a>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>History</h3>
+            <p>View your saved farming records and previous activity.</p>
+            <a class="btn-link" href="{{ url_for('history') }}">Open</a>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>Crop Suitability Guide</h3>
+             <p>Get a full crop suitability analysis with best crop, alternatives, farming guide, and a separate pie chart.</p>
+             <a class="btn-link" href="{{ url_for('crop_suitability') }}">Open</a>
+         </div>
+
+         <div class="dashboard-card">
+             <h3>Crop Cultivation Guide</h3>
+             <p>View the full farming process for a selected crop, from land preparation to storage.</p>
+             <a class="btn-link" href="{{ url_for('crop_cultivation') }}">Open</a>
+         </div>
+    </section>
+
+    <section class="charts-grid">
+        <div class="chart-card">
+            <h2>Module Usage Pie Chart</h2>
+            <canvas id="pieChart"></canvas>
+        </div>
+    </section>
+
+    <footer>
+        <p>AgroGuide © 2026 | Smart Farming Assistant Web App</p>
+    </footer>
+
+    <script>
+        const moduleCounts = {{ module_counts | tojson }};
+
+        const labels = Object.keys(moduleCounts);
+        const values = Object.values(moduleCounts);
+
+        new Chart(document.getElementById("pieChart"), {
+            type: "pie",
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: [
+                        "#1E88E5",
+                        "#E53935",
+                        "#FB8C00",
+                        "#8E24AA",
+                        "#00897B"
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

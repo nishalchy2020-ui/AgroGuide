@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pest Help - AgroGuide</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('crop_recommendation') }}">Crop Recommendation</a>
+        <a href="{{ url_for('weather') }}">Weather</a>
+        <a href="{{ url_for('irrigation') }}">Irrigation</a>
+        <a href="{{ url_for('fertilizer') }}">Fertilizer</a>
+        <a href="{{ url_for('pest_help') }}">Pest Help</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="form-container">
+        <h2>Pest and Disease Help</h2>
+
+        <form method="POST">
+            <label for="crop">Crop</label><br>
+            <select id="crop" name="crop" required>
+                <option value="">Select Crop</option>
+                <option value="Tomato">Tomato</option>
+                <option value="Rice">Rice</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Maize">Maize</option>
+            </select><br><br>
+
+            <label for="symptom">Symptom</label><br>
+            <select id="symptom" name="symptom" required>
+                <option value="">Select Symptom</option>
+                <option value="Yellow Leaves">Yellow Leaves</option>
+                <option value="Leaf Spots">Leaf Spots</option>
+                <option value="Wilting">Wilting</option>
+                <option value="Holes in Leaves">Holes in Leaves</option>
+            </select><br><br>
+
+            <button type="submit">Check Problem</button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="result-container">
+        <h2>Possible Issue</h2>
+        <p><strong>{{ result.issue }}</strong></p>
+        <p>{{ result.advice }}</p>
+    </div>
+    {% endif %}
+
+</body>
+</html>
